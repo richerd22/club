@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>club.cold.fyi - for people who work shows</title>
+<meta name="description" content="Tools for people who work shows: the booth, the lights, the promo and the deal. HARD STOP, GHOST LINK, DARKROOM, FRAME, GEL and more, from Third Polar Arch.">
+<link rel="canonical" href="https://club.cold.fyi/">
+<meta property="og:title" content="club.cold.fyi - for people who work shows">
+<meta property="og:description" content="The booth, the lights, the promo and the deal. Tools from Third Polar Arch for DJs, promoters and venues.">
+<meta name="theme-color" content="#0a0a10">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a10; --fg: #ffffff; --mut: #8c8c94; --line: rgba(255,255,255,.09);
+  --cold: #9cc4d9; --amber: #f0d79c; --red: #ff5a4f;
+  --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 400 14px/1.6 var(--mono); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 1px solid var(--cold); outline-offset: 3px; }
+.mut { color: var(--mut); }
+body::after { content: ""; position: fixed; inset: 0; z-index: 50; pointer-events: none; opacity: .035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 128px 128px; }
+
+.top, main, .foot { width: min(1080px, 100% - 32px); margin-inline: auto; }
+.top { padding: 22px 0 0; font-size: 13px; display: flex; justify-content: space-between; gap: 16px; }
+.top .mark:hover { color: var(--cold); }
+.slash { color: var(--mut); margin: 0 6px; }
+.here { color: var(--cold); }
+.live { color: var(--mut); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.live b { color: var(--red); font-weight: 400; }
+
+/* the hero: a booth countdown that never ends */
+.hero { padding: 56px 0 28px; }
+.kick { color: var(--mut); font-size: 13px; letter-spacing: .08em; margin: 0 0 18px; }
+h1 { font: 300 clamp(64px, 17vw, 196px)/.86 var(--mono); letter-spacing: -.06em; margin: 0; }
+h1 .dot { color: var(--cold); }
+.sub { font-size: clamp(15px, 2.2vw, 19px); max-width: 34em; margin: 22px 0 0; line-height: 1.5; }
+.bar { height: 4px; background: var(--line); margin: 34px 0 0; position: relative; overflow: hidden; }
+.bar i { position: absolute; inset: 0 auto 0 0; width: 62%; background: linear-gradient(90deg, var(--cold), var(--amber) 80%, var(--red)); }
+.barlab { display: flex; justify-content: space-between; color: var(--mut); font-size: 12px; margin-top: 8px; letter-spacing: .06em; }
+
+/* the running order */
+.ro { padding: 40px 0 20px; }
+.ro h2 { font: 500 12px var(--mono); letter-spacing: .14em; color: var(--mut); margin: 0 0 6px; display: flex; gap: 14px; align-items: baseline; }
+.ro h2 .room { color: var(--fg); }
+.slots { list-style: none; margin: 0 0 44px; padding: 0; border-top: 1px solid var(--line); }
+.slot a { display: grid; grid-template-columns: 74px minmax(0, 1fr) minmax(0, 1.25fr) 28px; gap: 4px 24px; align-items: baseline;
+  padding: 16px 0; border-bottom: 1px solid var(--line); transition: background .15s; }
+.slot a:hover, .slot a:focus-visible { background: rgba(156,196,217,.05); }
+.t { color: var(--mut); font-variant-numeric: tabular-nums; }
+.n { font-size: clamp(18px, 2.6vw, 26px); font-weight: 400; letter-spacing: -.01em; line-height: 1.2; }
+.b { color: var(--mut); }
+.b .h { display: block; color: var(--cold); font-size: 12px; margin-top: 2px; }
+.go { color: var(--mut); text-align: right; transition: transform .15s, color .15s; }
+.slot a:hover .go { color: var(--cold); transform: translateX(3px); }
+.slot.on .t { color: var(--red); }
+.slot.on .t::after { content: " ON"; }
+.tag { display: inline-block; font-size: 11px; letter-spacing: .08em; color: var(--bg); background: var(--cold); padding: 1px 6px; margin-left: 10px; vertical-align: 3px; }
+
+.duo { border: 1px solid var(--line); padding: 18px 20px; margin: -26px 0 44px; color: var(--mut); font-size: 13px; }
+.duo b { color: var(--fg); font-weight: 400; }
+
+.foot { padding: 30px 0 60px; border-top: 1px solid var(--line); color: var(--mut); font-size: 12px; }
+.foot p { margin: 0 0 6px; }
+.foot a { color: var(--fg); }
+.foot a:hover { color: var(--cold); }
+
+@media (max-width: 720px) {
+  .slot a { grid-template-columns: 56px minmax(0, 1fr) 20px; }
+  .slot .b { grid-column: 2 / 3; }
+  .slot .go { grid-row: 1; grid-column: 3; }
+  .slot.on .t::after { content: ""; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <span><a class="mark" href="https://cold.fyi">cold.fyi</a><span class="slash">/</span><span class="here">club</span></span>
+  <span class="live" id="live" aria-hidden="true"><b>&#9679;</b> <span id="clock">--:--</span></span>
+</header>
+<main>
+  <section class="hero">
+    <p class="kick">FOR PEOPLE WHO WORK SHOWS</p>
+    <h1>club<span class="dot">.</span></h1>
+    <p class="sub">The booth, the lights, the promo and the deal. Tools from Third Polar Arch for DJs, promoters, crews and venues, made by someone who plays the room.</p>
+    <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+    <div class="barlab" aria-hidden="true"><span>DOORS</span><span id="left">THE NIGHT</span><span>HARD STOP</span></div>
+  </section>
+
+  <section class="ro" aria-label="Running order">
+    <h2><span class="room">THE BOOTH</span><span>run the night</span></h2>
+    <ul class="slots">
+      <li class="slot"><a href="https://hardstop.cold.fyi"><span class="t">22:00</span><span class="n">HARD STOP</span><span class="b">Countdown and comms panel for the DJ booth, plus the app that runs the night.<span class="h">hardstop.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+      <li class="slot"><a href="https://ghostlink.cold.fyi"><span class="t">22:00</span><span class="n">GHOST LINK</span><span class="b">A small box for the DJ booth: every deck live on any phone browser. It only listens.<span class="h">ghostlink.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+    </ul>
+    <p class="duo"><b>Each one works on its own.</b> Together, the booth panel shows the decks too.</p>
+
+    <h2><span class="room">THE LIGHTS</span><span>look the part</span></h2>
+    <ul class="slots">
+      <li class="slot"><a href="https://frame.thirdpolararch.com"><span class="t">23:00</span><span class="n">FRAME</span><span class="b">Visuals for DJs and venues: clip packs, live visualizers, VJ tools.<span class="h">frame.thirdpolararch.com</span></span><span class="go">&rarr;</span></a></li>
+      <li class="slot"><a href="https://gel.cold.fyi"><span class="t">23:30</span><span class="n">GEL</span><span class="b">Lighting gel color theory: what to mix when.<span class="h">gel.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+      <li class="slot"><a href="https://permit.cold.fyi"><span class="t">00:00</span><span class="n">Bureau of Effects Regulation</span><span class="b">Apply for your RMX-1000 Operator's Permit.<span class="h">permit.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+    </ul>
+
+    <h2><span class="room">THE PROMO</span><span>fill the room</span></h2>
+    <ul class="slots">
+      <li class="slot"><a href="https://darkroom.ad"><span class="t">00:30</span><span class="n">DARKROOM</span><span class="b">Meta ads for music and nightlife.<span class="h">darkroom.ad</span></span><span class="go">&rarr;</span></a></li>
+      <li class="slot"><a href="https://school.darkroom.ad"><span class="t">01:00</span><span class="n">Darkroom Ad School <span class="tag">FREE</span></span><span class="b">Free Meta ads training for music and nightlife.<span class="h">school.darkroom.ad</span></span><span class="go">&rarr;</span></a></li>
+    </ul>
+
+    <h2><span class="room">THE DEAL</span><span>split it right</span></h2>
+    <ul class="slots">
+      <li class="slot"><a href="https://copro.cold.fyi"><span class="t">01:30</span><span class="n">Co-Pro Calculator</span><span class="b">Co-promotion deal calculator.<span class="h">copro.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+    </ul>
+
+    <h2><span class="room">AFTERS</span><span>read up on how it all works</span></h2>
+    <ul class="slots">
+      <li class="slot"><a href="https://showfile.cold.fyi"><span class="t">02:00</span><span class="n">The Show File</span><span class="b">How an electronic dance music show gets made.<span class="h">showfile.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+      <li class="slot"><a href="https://polo.cold.fyi"><span class="t">02:00</span><span class="n">Polo</span><span class="b">How Coachella actually works.<span class="h">polo.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+      <li class="slot"><a href="https://wristband.cold.fyi"><span class="t">02:00</span><span class="n">The Wristband</span><span class="b">How music festivals work, from Newport to Tomorrowland.<span class="h">wristband.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+      <li class="slot"><a href="https://lastcall.cold.fyi"><span class="t">02:00</span><span class="n">Last Call</span><span class="b">How nightlife works, from closing-time laws to getting home.<span class="h">lastcall.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+      <li class="slot"><a href="https://tickets.cold.fyi"><span class="t">02:00</span><span class="n">The Ticket</span><span class="b">How a concert ticket gets from artist to fan, and who takes a cut on the way.<span class="h">tickets.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+      <li class="slot"><a href="https://groove.cold.fyi"><span class="t">02:00</span><span class="n">The Groove</span><span class="b">How a vinyl record is made, pressed, played and collected.<span class="h">groove.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+      <li class="slot"><a href="https://flip.cold.fyi"><span class="t">02:00</span><span class="n">The Flip</span><span class="b">How sampling works: the breaks, the machines, the law and the money.<span class="h">flip.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+    </ul>
+  </section>
+</main>
+<footer class="foot">
+  <p>made with &lt;3 in Boston by <a href="https://thirdpolararch.com">Third Polar Arch</a></p>
+  <p><a href="https://thirdpolararch.com/terms">terms</a> &nbsp; <a href="https://thirdpolararch.com/privacy">privacy</a> &nbsp; <a href="https://map.cold.fyi">every site</a></p>
+  <p>Third Polar Arch, PO Box 120264, Boston, MA 02112-0264 &nbsp; <a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a></p>
+</footer>
+<script>
+(function(){
+  // the header clock, and the bar: how far tonight is from doors (10 PM) to a 2 AM hard stop, in the visitor's own time
+  var clock=document.getElementById('clock'), bar=document.getElementById('bar'), left=document.getElementById('left');
+  var slots=[].slice.call(document.querySelectorAll('.slot'));
+  function tick(){
+    var d=new Date(), h=d.getHours(), m=d.getMinutes();
+    clock.textContent=(h<10?'0':'')+h+':'+(m<10?'0':'')+m;
+    var mins=((h+2)%24)*60+m; // 22:00 -> 0, 02:00 -> 240
+    var p=Math.max(0,Math.min(1,mins/240));
+    bar.style.width=(p*100).toFixed(1)+'%';
+    left.textContent=mins<240?(240-mins)+' MIN TO HARD STOP':'NOT TONIGHT YET';
+    // the slot whose time has come is ON (the last one at or before now, within the night)
+    slots.forEach(function(s){s.classList.remove('on');});
+    if(mins<240){
+      var on=null;
+      slots.forEach(function(s){
+        var t=s.querySelector('.t').textContent.split(':'), sm=((+t[0]+2)%24)*60+(+t[1]);
+        if(sm<=mins) on=s;
+      });
+      if(on) on.classList.add('on');
+    }
+  }
+  tick(); setInterval(tick,15000);
+})();
+</script>
+</body>
+</html>
