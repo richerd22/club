@@ -7,162 +7,211 @@
 <meta name="description" content="Tools for people who work shows: the booth, the lights, the promo and the deal. HARD STOP, GHOST LINK, DARKROOM, FRAME, GEL and more, from Third Polar Arch.">
 <link rel="canonical" href="https://club.cold.fyi/">
 <meta property="og:title" content="club.cold.fyi - for people who work shows">
-<meta property="og:description" content="The booth, the lights, the promo and the deal. Tools from Third Polar Arch for DJs, promoters and venues.">
-<meta name="theme-color" content="#0a0a10">
+<meta property="og:description" content="The booth, the lights, the promo and the deal. Tools from Third Polar Arch for DJs, promoters, crews and venues.">
+<meta name="theme-color" content="#000000">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0a0a10; --fg: #ffffff; --mut: #8c8c94; --line: rgba(255,255,255,.09);
-  --cold: #9cc4d9; --amber: #f0d79c; --red: #ff5a4f;
-  --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --bg: #000; --panel: #0b0b0d; --key: #1c1c1f; --key-hi: #262629;
+  --fg: #fff; --dim: #8a8a90; --line: #1f1f23;
+  --amber: #ffb000; --red: #ff3b3b; --green: #3ddc84; --cyan: #7fd1ff;
+  --big: "Bebas Neue", "Oswald", Impact, "Arial Narrow", sans-serif;
+  --term: "VT323", ui-monospace, "SF Mono", Menlo, monospace;
 }
 * { box-sizing: border-box; }
 html { background: var(--bg); }
-body { margin: 0; background: var(--bg); color: var(--fg); font: 400 14px/1.6 var(--mono); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 400 20px/1.25 var(--term); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 a { color: inherit; text-decoration: none; }
-:focus-visible { outline: 1px solid var(--cold); outline-offset: 3px; }
-.mut { color: var(--mut); }
-body::after { content: ""; position: fixed; inset: 0; z-index: 50; pointer-events: none; opacity: .035;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 128px 128px; }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.wrap { width: min(1120px, 100% - 32px); margin-inline: auto; }
 
-.top, main, .foot { width: min(1080px, 100% - 32px); margin-inline: auto; }
-.top { padding: 22px 0 0; font-size: 13px; display: flex; justify-content: space-between; gap: 16px; }
-.top .mark:hover { color: var(--cold); }
-.slash { color: var(--mut); margin: 0 6px; }
-.here { color: var(--cold); }
-.live { color: var(--mut); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.live b { color: var(--red); font-weight: 400; }
+/* THE PANEL: a booth screen with the countdown frame */
+.panel { position: relative; margin: 20px auto 0; background: var(--panel); border-radius: 18px; padding: 18px 26px 0; box-shadow: 0 0 0 1px #222 inset, 0 30px 80px rgba(0,0,0,.6); overflow: hidden; }
+.panel::after { content: ""; position: absolute; inset: 0; border-radius: 18px; pointer-events: none; box-shadow: inset 0 0 0 4px var(--frame, var(--amber)); opacity: var(--frameop, 0); transition: opacity .4s; }
+.hdr { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font: 400 clamp(20px, 3vw, 30px)/1 var(--big); letter-spacing: .02em; }
+.hdr .mid { font-variant-numeric: tabular-nums; }
+.hdr .rt { color: var(--dim); white-space: nowrap; }
+.dot { display: inline-block; width: .5em; height: .5em; border-radius: 50%; background: var(--green); margin-left: .35em; vertical-align: .08em; }
+.main { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 6px 0 4px; }
+.num { font: 400 clamp(120px, 30vw, 300px)/.82 var(--big); text-align: center; font-variant-numeric: tabular-nums; margin: 8px 0 0; }
+.l1 { font: 400 clamp(22px, 3.6vw, 40px)/1 var(--big); text-align: center; margin: 6px 0 0; }
+.l2 { font: 400 clamp(18px, 2.6vw, 28px)/1.1 var(--big); text-align: center; color: var(--dim); margin: 6px 0 10px; }
+.l1.ten { color: var(--amber); } .l1.five, .num.five { color: var(--red); }
+.tick { font: 400 clamp(13px, 1.6vw, 18px)/1.05 var(--term); white-space: pre; margin: 0; }
+.tick .ey { color: var(--cyan); }
+.strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; border-top: 2px solid var(--red); padding: 10px 0 12px; }
+.strip b { display: block; font: 400 clamp(16px, 2vw, 22px)/1 var(--big); color: var(--dim); letter-spacing: .02em; }
+.strip span { display: block; font: 400 clamp(22px, 3vw, 34px)/1.05 var(--big); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.keys { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; padding: 0 0 18px; }
+.key { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 58px; padding: 6px 8px; border-radius: 10px; background: var(--key); font: 400 clamp(18px, 2.2vw, 26px)/1 var(--big); letter-spacing: .02em; transition: background .12s, transform .08s; }
+.key:hover { background: var(--key-hi); } .key:active { transform: scale(.98); }
+.key.a { color: var(--amber); } .key.c { color: var(--cyan); } .key.g { color: var(--green); } .key.r { color: var(--red); }
 
-/* the hero: a booth countdown that never ends */
-.hero { padding: 56px 0 28px; }
-.kick { color: var(--mut); font-size: 13px; letter-spacing: .08em; margin: 0 0 18px; }
-h1 { font: 300 clamp(64px, 17vw, 196px)/.86 var(--mono); letter-spacing: -.06em; margin: 0; }
-h1 .dot { color: var(--cold); }
-.sub { font-size: clamp(15px, 2.2vw, 19px); max-width: 34em; margin: 22px 0 0; line-height: 1.5; }
-.bar { height: 4px; background: var(--line); margin: 34px 0 0; position: relative; overflow: hidden; }
-.bar i { position: absolute; inset: 0 auto 0 0; width: 62%; background: linear-gradient(90deg, var(--cold), var(--amber) 80%, var(--red)); }
-.barlab { display: flex; justify-content: space-between; color: var(--mut); font-size: 12px; margin-top: 8px; letter-spacing: .06em; }
+.intro { padding: 34px 0 8px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 28px; align-items: end; }
+.intro h1 { font: 400 clamp(54px, 10vw, 120px)/.85 var(--big); margin: 0; }
+.intro h1 em { font-style: normal; color: var(--amber); }
+.intro p { margin: 0; color: #cfcfd4; font-size: 22px; }
 
-/* the running order */
-.ro { padding: 40px 0 20px; }
-.ro h2 { font: 500 12px var(--mono); letter-spacing: .14em; color: var(--mut); margin: 0 0 6px; display: flex; gap: 14px; align-items: baseline; }
-.ro h2 .room { color: var(--fg); }
-.slots { list-style: none; margin: 0 0 44px; padding: 0; border-top: 1px solid var(--line); }
-.slot a { display: grid; grid-template-columns: 74px minmax(0, 1fr) minmax(0, 1.25fr) 28px; gap: 4px 24px; align-items: baseline;
-  padding: 16px 0; border-bottom: 1px solid var(--line); transition: background .15s; }
-.slot a:hover, .slot a:focus-visible { background: rgba(156,196,217,.05); }
-.t { color: var(--mut); font-variant-numeric: tabular-nums; }
-.n { font-size: clamp(18px, 2.6vw, 26px); font-weight: 400; letter-spacing: -.01em; line-height: 1.2; }
-.b { color: var(--mut); }
-.b .h { display: block; color: var(--cold); font-size: 12px; margin-top: 2px; }
-.go { color: var(--mut); text-align: right; transition: transform .15s, color .15s; }
-.slot a:hover .go { color: var(--cold); transform: translateX(3px); }
-.slot.on .t { color: var(--red); }
-.slot.on .t::after { content: " ON"; }
-.tag { display: inline-block; font-size: 11px; letter-spacing: .08em; color: var(--bg); background: var(--cold); padding: 1px 6px; margin-left: 10px; vertical-align: 3px; }
-
-.duo { border: 1px solid var(--line); padding: 18px 20px; margin: -26px 0 44px; color: var(--mut); font-size: 13px; }
+/* the running order, as a LINEUP BOARD */
+.board { padding: 20px 0 10px; }
+.room { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; border-bottom: 2px solid var(--line); padding: 26px 0 8px; scroll-margin-top: 16px; }
+.room h2 { margin: 0; font: 400 clamp(30px, 4.4vw, 48px)/1 var(--big); }
+.room small { color: var(--dim); font-size: 20px; }
+.rows { list-style: none; margin: 0; padding: 0; }
+.row a { display: grid; grid-template-columns: 84px minmax(0, 1fr) minmax(0, 1.25fr) 34px; gap: 4px 22px; align-items: center; padding: 14px 12px; border-bottom: 1px solid var(--line); border-radius: 8px; transition: background .12s; }
+.row a:hover, .row a:focus-visible { background: #101013; }
+.row .t { font: 400 28px/1 var(--big); color: var(--dim); font-variant-numeric: tabular-nums; }
+.row .n { font: 400 clamp(30px, 3.6vw, 44px)/.95 var(--big); }
+.row .b { color: #bdbdc3; }
+.row .b i { font-style: normal; display: block; color: var(--cyan); font-size: 18px; margin-top: 2px; }
+.row .go { font: 400 30px/1 var(--big); color: var(--dim); text-align: right; transition: transform .12s, color .12s; }
+.row a:hover .go { color: var(--amber); transform: translateX(3px); }
+.row.on a { background: rgba(255,176,0,.07); box-shadow: inset 4px 0 0 var(--amber); }
+.row.on .t, .row.on .n { color: var(--amber); }
+.row.past .n, .row.past .t { color: #5d5d63; }
+.tag { display: inline-block; font: 400 18px/1 var(--big); padding: 3px 7px 1px; border-radius: 5px; vertical-align: .35em; margin-left: 10px; color: #000; background: var(--green); }
+.duo { margin: 14px 0 0; padding: 14px 16px; border: 1px dashed #2c2c31; border-radius: 10px; color: var(--dim); }
 .duo b { color: var(--fg); font-weight: 400; }
 
-.foot { padding: 30px 0 60px; border-top: 1px solid var(--line); color: var(--mut); font-size: 12px; }
+.foot { padding: 40px 0 64px; margin-top: 40px; border-top: 2px solid var(--line); color: var(--dim); font-size: 19px; }
 .foot p { margin: 0 0 6px; }
-.foot a { color: var(--fg); }
-.foot a:hover { color: var(--cold); }
+.foot a { color: var(--fg); } .foot a:hover { color: var(--amber); }
 
-@media (max-width: 720px) {
-  .slot a { grid-template-columns: 56px minmax(0, 1fr) 20px; }
-  .slot .b { grid-column: 2 / 3; }
-  .slot .go { grid-row: 1; grid-column: 3; }
-  .slot.on .t::after { content: ""; }
+@media (max-width: 760px) {
+  .panel { padding: 14px 16px 0; border-radius: 14px; }
+  .main { grid-template-columns: 1fr; }
+  .tick { display: none; }
+  .hdr .rt span { display: none; }
+  .strip { grid-template-columns: 1fr 1fr; } .strip div:nth-child(3) { display: none; }
+  .keys { grid-template-columns: repeat(3, minmax(0, 1fr)); } .keys .key:nth-child(n+4) { display: none; }
+  .intro { grid-template-columns: 1fr; gap: 14px; }
+  .row a { grid-template-columns: 62px minmax(0, 1fr) 22px; padding: 12px 6px; }
+  .row .b { grid-column: 2 / 3; }
+  .row .go { grid-row: 1; grid-column: 3; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
-<header class="top">
-  <span><a class="mark" href="https://cold.fyi">cold.fyi</a><span class="slash">/</span><span class="here">club</span></span>
-  <span class="live" id="live" aria-hidden="true"><b>&#9679;</b> <span id="clock">--:--</span></span>
-</header>
-<main>
-  <section class="hero">
-    <p class="kick">FOR PEOPLE WHO WORK SHOWS</p>
-    <h1>club<span class="dot">.</span></h1>
-    <p class="sub">The booth, the lights, the promo and the deal. Tools from Third Polar Arch for DJs, promoters, crews and venues, made by someone who plays the room.</p>
-    <div class="bar" aria-hidden="true"><i id="bar"></i></div>
-    <div class="barlab" aria-hidden="true"><span>DOORS</span><span id="left">THE NIGHT</span><span>HARD STOP</span></div>
+<div class="wrap">
+  <section class="panel" id="panel" aria-label="A booth screen counting down to tonight's hard stop">
+    <div class="hdr"><span>CLUB</span><span class="mid" id="clock">--:--</span><span class="rt"><span>THIRD POLAR ARCH</span><i class="dot" aria-hidden="true"></i></span></div>
+    <div class="main">
+      <div>
+        <p class="num" id="num">--</p>
+        <p class="l1" id="l1">MINUTES TO HARD STOP</p>
+        <p class="l2" id="l2">FOR PEOPLE WHO WORK SHOWS</p>
+      </div>
+<pre class="tick" aria-hidden="true">  <span class="ey">(o)_|_(o)</span>
+ /         \
+|   o   o   |
+|     v     |
+ \_________/
+   _/   \_</pre>
+    </div>
+    <div class="strip">
+      <div><b>ON NOW</b><span id="onnow">DOORS</span></div>
+      <div><b>NEXT UP</b><span id="nextup">HARD STOP</span></div>
+      <div><b>TONIGHT</b><span>15 SITES</span></div>
+    </div>
+    <nav class="keys" aria-label="Jump to a room">
+      <a class="key a" href="#booth">THE BOOTH</a>
+      <a class="key c" href="#lights">THE LIGHTS</a>
+      <a class="key g" href="#promo">THE PROMO</a>
+      <a class="key" href="#deal">THE DEAL</a>
+      <a class="key r" href="#afters">AFTERS</a>
+    </nav>
   </section>
 
-  <section class="ro" aria-label="Running order">
-    <h2><span class="room">THE BOOTH</span><span>run the night</span></h2>
-    <ul class="slots">
-      <li class="slot"><a href="https://hardstop.cold.fyi"><span class="t">22:00</span><span class="n">HARD STOP</span><span class="b">Countdown and comms panel for the DJ booth, plus the app that runs the night.<span class="h">hardstop.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
-      <li class="slot"><a href="https://ghostlink.cold.fyi"><span class="t">22:00</span><span class="n">GHOST LINK</span><span class="b">A small box for the DJ booth: every deck live on any phone browser. It only listens.<span class="h">ghostlink.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+  <section class="intro">
+    <h1>FOR PEOPLE WHO <em>WORK</em> SHOWS.</h1>
+    <p>The booth, the lights, the promo and the deal. Third Polar Arch makes tools for DJs, promoters, crews and venues. Tonight's running order is below.</p>
+  </section>
+
+  <main class="board" aria-label="Running order">
+    <div class="room" id="booth"><h2>THE BOOTH</h2><small>run the night</small></div>
+    <ul class="rows">
+      <li class="row"><a href="https://hardstop.cold.fyi"><span class="t">22:00</span><span class="n">HARD STOP</span><span class="b">Countdown and comms panel for the DJ booth, plus the app that runs the night.<i>hardstop.cold.fyi</i></span><span class="go">&rarr;</span></a></li>
+      <li class="row"><a href="https://ghostlink.cold.fyi"><span class="t">22:00</span><span class="n">GHOST LINK</span><span class="b">A small box for the DJ booth: every deck live on any phone browser. It only listens.<i>ghostlink.cold.fyi</i></span><span class="go">&rarr;</span></a></li>
     </ul>
     <p class="duo"><b>Each one works on its own.</b> Together, the booth panel shows the decks too.</p>
 
-    <h2><span class="room">THE LIGHTS</span><span>look the part</span></h2>
-    <ul class="slots">
-      <li class="slot"><a href="https://frame.thirdpolararch.com"><span class="t">23:00</span><span class="n">FRAME</span><span class="b">Visuals for DJs and venues: clip packs, live visualizers, VJ tools.<span class="h">frame.thirdpolararch.com</span></span><span class="go">&rarr;</span></a></li>
-      <li class="slot"><a href="https://gel.cold.fyi"><span class="t">23:30</span><span class="n">GEL</span><span class="b">Lighting gel color theory: what to mix when.<span class="h">gel.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
-      <li class="slot"><a href="https://permit.cold.fyi"><span class="t">00:00</span><span class="n">Bureau of Effects Regulation</span><span class="b">Apply for your RMX-1000 Operator's Permit.<span class="h">permit.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+    <div class="room" id="lights"><h2>THE LIGHTS</h2><small>look the part</small></div>
+    <ul class="rows">
+      <li class="row"><a href="https://frame.thirdpolararch.com"><span class="t">23:00</span><span class="n">FRAME</span><span class="b">Visuals for DJs and venues: clip packs, live visualizers, VJ tools.<i>frame.thirdpolararch.com</i></span><span class="go">&rarr;</span></a></li>
+      <li class="row"><a href="https://gel.cold.fyi"><span class="t">23:30</span><span class="n">GEL</span><span class="b">Lighting gel color theory: what to mix when.<i>gel.cold.fyi</i></span><span class="go">&rarr;</span></a></li>
+      <li class="row"><a href="https://permit.cold.fyi"><span class="t">00:00</span><span class="n">BUREAU OF EFFECTS REGULATION</span><span class="b">Apply for your RMX-1000 Operator's Permit.<i>permit.cold.fyi</i></span><span class="go">&rarr;</span></a></li>
     </ul>
 
-    <h2><span class="room">THE PROMO</span><span>fill the room</span></h2>
-    <ul class="slots">
-      <li class="slot"><a href="https://darkroom.ad"><span class="t">00:30</span><span class="n">DARKROOM</span><span class="b">Meta ads for music and nightlife.<span class="h">darkroom.ad</span></span><span class="go">&rarr;</span></a></li>
-      <li class="slot"><a href="https://school.darkroom.ad"><span class="t">01:00</span><span class="n">Darkroom Ad School <span class="tag">FREE</span></span><span class="b">Free Meta ads training for music and nightlife.<span class="h">school.darkroom.ad</span></span><span class="go">&rarr;</span></a></li>
+    <div class="room" id="promo"><h2>THE PROMO</h2><small>fill the room</small></div>
+    <ul class="rows">
+      <li class="row"><a href="https://darkroom.ad"><span class="t">00:30</span><span class="n">DARKROOM</span><span class="b">Meta ads for music and nightlife.<i>darkroom.ad</i></span><span class="go">&rarr;</span></a></li>
+      <li class="row"><a href="https://school.darkroom.ad"><span class="t">01:00</span><span class="n">DARKROOM AD SCHOOL<span class="tag">FREE</span></span><span class="b">Free Meta ads training for music and nightlife.<i>school.darkroom.ad</i></span><span class="go">&rarr;</span></a></li>
     </ul>
 
-    <h2><span class="room">THE DEAL</span><span>split it right</span></h2>
-    <ul class="slots">
-      <li class="slot"><a href="https://copro.cold.fyi"><span class="t">01:30</span><span class="n">Co-Pro Calculator</span><span class="b">Co-promotion deal calculator.<span class="h">copro.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+    <div class="room" id="deal"><h2>THE DEAL</h2><small>split it right</small></div>
+    <ul class="rows">
+      <li class="row"><a href="https://copro.cold.fyi"><span class="t">01:30</span><span class="n">CO-PRO CALCULATOR</span><span class="b">Co-promotion deal calculator.<i>copro.cold.fyi</i></span><span class="go">&rarr;</span></a></li>
     </ul>
 
-    <h2><span class="room">AFTERS</span><span>read up on how it all works</span></h2>
-    <ul class="slots">
-      <li class="slot"><a href="https://showfile.cold.fyi"><span class="t">02:00</span><span class="n">The Show File</span><span class="b">How an electronic dance music show gets made.<span class="h">showfile.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
-      <li class="slot"><a href="https://polo.cold.fyi"><span class="t">02:00</span><span class="n">Polo</span><span class="b">How Coachella actually works.<span class="h">polo.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
-      <li class="slot"><a href="https://wristband.cold.fyi"><span class="t">02:00</span><span class="n">The Wristband</span><span class="b">How music festivals work, from Newport to Tomorrowland.<span class="h">wristband.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
-      <li class="slot"><a href="https://lastcall.cold.fyi"><span class="t">02:00</span><span class="n">Last Call</span><span class="b">How nightlife works, from closing-time laws to getting home.<span class="h">lastcall.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
-      <li class="slot"><a href="https://tickets.cold.fyi"><span class="t">02:00</span><span class="n">The Ticket</span><span class="b">How a concert ticket gets from artist to fan, and who takes a cut on the way.<span class="h">tickets.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
-      <li class="slot"><a href="https://groove.cold.fyi"><span class="t">02:00</span><span class="n">The Groove</span><span class="b">How a vinyl record is made, pressed, played and collected.<span class="h">groove.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
-      <li class="slot"><a href="https://flip.cold.fyi"><span class="t">02:00</span><span class="n">The Flip</span><span class="b">How sampling works: the breaks, the machines, the law and the money.<span class="h">flip.cold.fyi</span></span><span class="go">&rarr;</span></a></li>
+    <div class="room" id="afters"><h2>AFTERS</h2><small>read up on how it all works</small></div>
+    <ul class="rows">
+      <li class="row"><a href="https://showfile.cold.fyi"><span class="t">02:00</span><span class="n">THE SHOW FILE</span><span class="b">How an electronic dance music show gets made.<i>showfile.cold.fyi</i></span><span class="go">&rarr;</span></a></li>
+      <li class="row"><a href="https://polo.cold.fyi"><span class="t">02:00</span><span class="n">POLO</span><span class="b">How Coachella actually works.<i>polo.cold.fyi</i></span><span class="go">&rarr;</span></a></li>
+      <li class="row"><a href="https://wristband.cold.fyi"><span class="t">02:00</span><span class="n">THE WRISTBAND</span><span class="b">How music festivals work, from Newport to Tomorrowland.<i>wristband.cold.fyi</i></span><span class="go">&rarr;</span></a></li>
+      <li class="row"><a href="https://lastcall.cold.fyi"><span class="t">02:00</span><span class="n">LAST CALL</span><span class="b">How nightlife works, from closing-time laws to getting home.<i>lastcall.cold.fyi</i></span><span class="go">&rarr;</span></a></li>
+      <li class="row"><a href="https://tickets.cold.fyi"><span class="t">02:00</span><span class="n">THE TICKET</span><span class="b">How a concert ticket gets from artist to fan, and who takes a cut on the way.<i>tickets.cold.fyi</i></span><span class="go">&rarr;</span></a></li>
+      <li class="row"><a href="https://groove.cold.fyi"><span class="t">02:00</span><span class="n">THE GROOVE</span><span class="b">How a vinyl record is made, pressed, played and collected.<i>groove.cold.fyi</i></span><span class="go">&rarr;</span></a></li>
+      <li class="row"><a href="https://flip.cold.fyi"><span class="t">02:00</span><span class="n">THE FLIP</span><span class="b">How sampling works: the breaks, the machines, the law and the money.<i>flip.cold.fyi</i></span><span class="go">&rarr;</span></a></li>
     </ul>
-  </section>
-</main>
-<footer class="foot">
-  <p>made with &lt;3 in Boston by <a href="https://thirdpolararch.com">Third Polar Arch</a></p>
-  <p><a href="https://thirdpolararch.com/terms">terms</a> &nbsp; <a href="https://thirdpolararch.com/privacy">privacy</a> &nbsp; <a href="https://map.cold.fyi">every site</a></p>
-  <p>Third Polar Arch, PO Box 120264, Boston, MA 02112-0264 &nbsp; <a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a></p>
-</footer>
+  </main>
+
+  <footer class="foot">
+    <p>made with &lt;3 in Boston by <a href="https://thirdpolararch.com">Third Polar Arch</a></p>
+    <p><a href="https://thirdpolararch.com/terms">terms</a> &nbsp; <a href="https://thirdpolararch.com/privacy">privacy</a> &nbsp; <a href="https://map.cold.fyi">every site</a></p>
+    <p>Third Polar Arch, PO Box 120264, Boston, MA 02112-0264 &nbsp; <a href="mailto:hello@thirdpolararch.com">hello@thirdpolararch.com</a></p>
+  </footer>
+</div>
 <script>
 (function(){
-  // the header clock, and the bar: how far tonight is from doors (10 PM) to a 2 AM hard stop, in the visitor's own time
-  var clock=document.getElementById('clock'), bar=document.getElementById('bar'), left=document.getElementById('left');
-  var slots=[].slice.call(document.querySelectorAll('.slot'));
+  // the booth screen: tonight runs 10 PM doors to a 2 AM hard stop, in the visitor's own time
+  var $=function(i){return document.getElementById(i)};
+  var rows=[].slice.call(document.querySelectorAll('.row'));
+  var panel=$('panel');
+  function mins(h,m){return ((h+2)%24)*60+m;}  // 22:00 -> 0, 02:00 -> 240
+  function at(r){var t=r.querySelector('.t').textContent.split(':');return mins(+t[0],+t[1]);}
+  function name(r){return r?r.querySelector('.n').firstChild.textContent.trim():null;}
   function tick(){
     var d=new Date(), h=d.getHours(), m=d.getMinutes();
-    clock.textContent=(h<10?'0':'')+h+':'+(m<10?'0':'')+m;
-    var mins=((h+2)%24)*60+m; // 22:00 -> 0, 02:00 -> 240
-    var p=Math.max(0,Math.min(1,mins/240));
-    bar.style.width=(p*100).toFixed(1)+'%';
-    left.textContent=mins<240?(240-mins)+' MIN TO HARD STOP':'NOT TONIGHT YET';
-    // the slot whose time has come is ON (the last one at or before now, within the night)
-    slots.forEach(function(s){s.classList.remove('on');});
-    if(mins<240){
-      var on=null;
-      slots.forEach(function(s){
-        var t=s.querySelector('.t').textContent.split(':'), sm=((+t[0]+2)%24)*60+(+t[1]);
-        if(sm<=mins) on=s;
-      });
-      if(on) on.classList.add('on');
+    $('clock').textContent=((h%12)||12)+':'+(m<10?'0':'')+m+(h<12?' AM':' PM');
+    var now=mins(h,m), night=now<240, num=$('num'), l1=$('l1'), l2=$('l2');
+    num.className='num'; l1.className='l1';
+    var on=null, next=null;
+    rows.forEach(function(r){ r.classList.remove('on','past'); var s=at(r); if(night && s<=now) on=r; else if(night && !next && s>now) next=r; });
+    if(night){
+      var left=240-now;
+      num.textContent=left;
+      l1.textContent='MINUTES TO HARD STOP';
+      l2.textContent='MUSIC OFF AT 2:00 AM';
+      if(left<=5){num.classList.add('five');l1.classList.add('five');} else if(left<=10){l1.classList.add('ten');}
+      panel.style.setProperty('--frameop', left<=10?'1':'0');
+      panel.style.setProperty('--frame', left<=5?'var(--red)':'var(--amber)');
+      if(on){ var os=at(on); rows.forEach(function(r){ if(at(r)<os) r.classList.add('past'); }); on.classList.add('on'); }
+    } else {
+      var to=(22*60)-(h*60+m); if(to<0) to+=1440;
+      var hrs=Math.floor(to/60);
+      num.textContent=hrs>0?hrs:to;
+      l1.textContent=hrs>1?'HOURS TO DOORS':hrs===1?'HOUR TO DOORS':'MINUTES TO DOORS';
+      l2.textContent='DOORS 10 PM - HARD STOP 2 AM';
+      panel.style.setProperty('--frameop','0');
     }
+    $('onnow').textContent=night?(name(on)||'DOORS'):'SOUNDCHECK';
+    $('nextup').textContent=night?(name(next)||'GOODNIGHT'):'DOORS 10 PM';
   }
-  tick(); setInterval(tick,15000);
+  tick(); setInterval(tick,10000);
 })();
 </script>
 </body>
